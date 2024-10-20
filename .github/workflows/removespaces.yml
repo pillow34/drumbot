@@ -25,7 +25,7 @@ jobs:
       - name: Trim spaces
         run: |
           # Find all files and use sed to remove leading/trailing spaces
-          find . -type f -not -path "./.git/*" -exec sed -i 's/^[[:space:]]*//;s/[[:space:]]*$//' {} +
+          find . -type f -not -path "./.git/*" -exec sed -i -e 's/^[ \t]*//' -e 's/[ \t]*$//' {} \;
 
       # Check if there are changes
       - name: Check for changes
