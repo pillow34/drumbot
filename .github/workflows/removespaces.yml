@@ -36,4 +36,6 @@ jobs:
             echo "Changes detected, committing..."
             git add .
             git commit -m "Remove leading and trailing spaces"
-            git push
+            # Extract the branch name from GITHUB_REF and push to the same branch
+            branch=$(echo "${GITHUB_REF#refs/heads/}")
+            git push origin "$branch"
