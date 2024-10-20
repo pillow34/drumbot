@@ -10,6 +10,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Configure Git Settings
+        run: |
+          git config --global user.name "Your Name"
+          git config --global user.email "your_email@example.com"
 
       - name: Replace Trailing Spaces
         run: |
