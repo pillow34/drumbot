@@ -8,6 +8,9 @@ on:
 jobs:
   trim-spaces:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       # Checkout the repository and fetch all branches
