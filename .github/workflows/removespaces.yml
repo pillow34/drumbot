@@ -1,0 +1,25 @@
+name: Replace Trailing Spaces in Folders
+
+on:
+  push:
+    branches: '*'
+
+jobs:
+  replace-trailing-spaces:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Replace Trailing Spaces
+        run: |
+          find . -type d -name '* ' -print0 | while read -rd '' folder; do
+            new_name=$(basename "$folder" | sed 's/ *$//' | sed 's/$/ /')
+            mv "$folder" "${folder%/*}/$new_name"
+          done
+
+      - name: Commit Changes
+        run: |
+          git add .
+          git commit -m "Removed trailing spaces from folder names"
+          git push origin HEAD
