@@ -1,29 +1,38 @@
-name: Replace Trailing Spaces in Folders
+name: Remove Leading and Trailing Spaces
 
 on:
   push:
-    branches: '*'
+    branches:
+      - '**'  # Triggers on push to any branch
 
 jobs:
-  replace-trailing-spaces:
+  trim-spaces:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Configure Git Settings
-        run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "your_email@example.com"
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Replace Trailing Spaces
-        run: |
-          find . -type d -name '* ' -print0 | while read -rd '' folder; do
-            new_name=$(basename "$folder" | sed 's/ *$//' | sed 's/$/ /')
-            mv "$folder" "${folder%/*}/$new_name"
-          done
+      # Install required tools
+      - name: Set up Python
+        uses: actions/setup-python@v4
 
-      - name: Commit Changes
+      # Trim leading/trailing spaces
+      - name: Trim spaces
         run: |
-          git add .
-          git commit -m "Removed trailing spaces from folder names"
-          git push origin HEAD
+          # Find all files and use sed to remove leading/trailing spaces
+          find . -type f -not -path "./.git/*" -exec sed -i 's/^[[:space:]]*//;s/[[:space:]]*$//' {} +
+
+      # Check if there are changes
+      - name: Check for changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          if git diff --exit-code; then
+            echo "No changes detected."
+          else
+            echo "Changes detected, committing..."
+            git add .
+            git commit -m "Remove leading and trailing spaces"
+            git push
