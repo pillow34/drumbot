@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write      # Grant write permissions for content (repository) actions
-  workflows: write     # Grant permission to create or update workflow files
 
 jobs:
   trim-spaces:
