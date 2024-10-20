@@ -26,17 +26,17 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # Check for changes and commit if needed
+      # Check for changes using git status --porcelain and commit if needed
       - name: Check for changes
         run: |
-          if [[ -n $(git status --porcelain) ]]; then
+          if [ -n "$(git status --porcelain)" ]; then
             echo "Changes detected, committing..."
             git add .
             git commit -m "Remove leading and trailing spaces"
           else
             echo "No changes detected."
       
-      # Push changes to the same branch that triggered the workflow
+      # Push changes to the branch that triggered the workflow
       - name: Push changes
         run: |
           branch=$(echo "${GITHUB_REF#refs/heads/}")
