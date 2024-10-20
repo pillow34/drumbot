@@ -11,21 +11,20 @@ jobs:
 
     steps:
       # Checkout the repository
-      - uses: actions/checkout@v3
       - name: Checkout code
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+        uses: actions/checkout@v3
 
-      # Install required tools
-      - name: Set up Python
-        uses: actions/setup-python@v4
-
-      # Trim leading/trailing spaces
-      - name: Trim spaces
+      # Trim leading/trailing spaces from all files
+      - name: Trim spaces from all files
         run: |
           # Find all files and use sed to remove leading/trailing spaces
           find . -type f -not -path "./.git/*" -exec sed -i -e 's/^[ \t]*//' -e 's/[ \t]*$//' {} \;
+
+      # Configure Git user
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       # Check if there are changes
       - name: Check for changes
@@ -36,6 +35,9 @@ jobs:
             echo "Changes detected, committing..."
             git add .
             git commit -m "Remove leading and trailing spaces"
-            # Extract the branch name from GITHUB_REF and push to the same branch
-            branch=$(echo "${GITHUB_REF#refs/heads/}")
-            git push origin "$branch"
+      
+      # Push changes to the same branch that triggered the workflow
+      - name: Push changes
+        run: |
+          branch=$(echo "${GITHUB_REF#refs/heads/}")
+          git push origin "$branch"
