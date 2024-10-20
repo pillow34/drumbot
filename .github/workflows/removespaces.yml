@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checkout the repository and fetch all branches
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all branches so we can check out the most recent one
 
