@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checkout the repository and fetch all branches
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all branches so we can check out the most recent one
 
@@ -36,8 +36,8 @@ jobs:
       # Configure Git user
       - name: Configure Git
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       # Check for changes and commit if needed, explicitly using 'fi'
       - name: Check for changes
